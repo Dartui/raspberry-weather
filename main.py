@@ -41,7 +41,7 @@ class Main:
         draw.line((0, 101, 200, 101), fill = 0)
 
         # icon
-        draw.text((20, 70), time.strftime('%H:%M'), font = self.font, fill = 0)
+        draw.text((18, 70), time.strftime('%H:%M'), font = self.font, fill = 0)
         weatherImage = Image.open(self.weatherIcon())
         image.paste(weatherImage, (18, 3))
 
@@ -51,7 +51,7 @@ class Main:
         image.paste(temperatureImage, (126, 3))
 
         # wind
-        draw.text((33, 171), self.windSpeed(), font = self.font, fill = 0)
+        draw.text((20, 171), self.windSpeed(), font = self.font, fill = 0)
         windImage = Image.open(self.windIcon())
         image.paste(windImage, (18, 104))
 
