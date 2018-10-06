@@ -90,7 +90,7 @@ class Main:
         return 'icons/wind/%s.bmp' % (windDirection)
 
     def windSpeed(self):
-        speed = float(self.weather['wind']['value']) * 3.6
+        speed = float(self.weather['wind']['speed']) * 3.6
 
         return "{0:.1f}".format(speed)
 
