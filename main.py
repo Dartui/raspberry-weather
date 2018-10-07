@@ -3,12 +3,11 @@ import lib.epd1in54 as epd
 import Image
 import ImageDraw
 import ImageFont
-import os
 import time
 
 class Main:
     def __init__(self):
-        self.weather = Weather(54.456417, 18.535194).getDataFromApi()
+        self.weather = Weather(54.456417, 18.535194)
         self.smallFont = ImageFont.truetype('./fonts/FreeMonoBold.ttf', 24)
         self.largeFont = ImageFont.truetype('./fonts/FreeMonoBold.ttf', 36)
 
