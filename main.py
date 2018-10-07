@@ -9,7 +9,8 @@ import time
 class Main:
     def __init__(self):
         self.weather = Weather(54.456417, 18.535194).getDataFromApi()
-        self.font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 24)
+        self.smallFont = ImageFont.truetype('./fonts/FreeMonoBold.ttf', 24)
+        self.largeFont = ImageFont.truetype('./fonts/FreeMonoBold.ttf', 36)
 
         self.initEpd()
 
@@ -21,16 +22,7 @@ class Main:
     def screenDimension(self):
         return (epd.EPD_WIDTH, epd.EPD_HEIGHT)
 
-    def drawBackground(self):
-        image = Image.new('1', self.screenDimension(), 255)
-
-        draw = ImageDraw.Draw(image)
-
-
-        self.drawImage(image)
-        self.drawImage(image)
-
-    def writeData(self):
+    def generate(self):
         image = Image.new('1', self.screenDimension(), 255);
         draw = ImageDraw.Draw(image)
 
@@ -41,67 +33,39 @@ class Main:
         draw.line((0, 101, 200, 101), fill = 0)
 
         # icon
-        draw.text((18, 70), time.strftime('%H:%M'), font = self.font, fill = 0)
-        weatherImage = Image.open(self.weatherIcon())
+        draw.text((18, 70), time.strftime('%H:%M'), font = self.smallFont, fill = 0)
+
+        weatherImage = Image.open(self.weather.getIcon())
         image.paste(weatherImage, (18, 3))
 
         # temperature
-        draw.text((123, 70), self.weather['temperature']['value'], font = self.font, fill = 0)
-        temperatureImage = Image.open(self.temperatureIcon())
+        draw.text((123, 70), self.weather.getTemperatureValue(), font = self.smallFont, fill = 0)
+
+        temperatureImage = Image.open(self.weather.getTemperatureIcon())
         image.paste(temperatureImage, (126, 3))
 
         # wind
-        draw.text((20, 171), self.windSpeed(), font = self.font, fill = 0)
-        windImage = Image.open(self.windIcon())
+        draw.text((20, 171), self.weather.getWindSpeed(), font = self.smallFont, fill = 0)
+
+        windImage = Image.open(self.weather.getWindIcon())
         image.paste(windImage, (18, 104))
 
         # pressure
-        draw.text((110, 171), self.weather['pressure']['value'], font = self.font, fill = 0)
-        pressureFont = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 36)
-        draw.text((120, 120), self.weather['pressure']['unit'], font = pressureFont, fill = 0)
+        draw.text((110, 171), self.weather.getPressureValue(), font = self.smallFont, fill = 0)
+
+        draw.text((120, 120), self.weather.getPressureUnit(), font = self.largeFont, fill = 0)
+
+        return image
+
+    def draw(self):
+        image = self.generate()
 
         self.drawImage(image)
         self.drawImage(image)
-
-    def weatherIcon(self):
-        iconId = self.weather['icon']
-        path = 'icons/weather/%s.bmp' % (iconId)
-
-        if (os.path.isfile(path)):
-            return path
-
-        return 'icons/unknown.bmp'
-
-
-    def temperatureIcon(self):
-        temperature = float(self.weather['temperature']['value'])
-
-        if (temperature < 0):
-            return 'icons/temperature/cold.bmp'
-
-        if (temperature > 20):
-            return 'icons/temperature/warm.bmp'
-
-        return 'icons/temperature/normal.bmp'
-
-    def windIcon(self):
-        windDirection = self.weather['wind']['direction']
-
-        return 'icons/wind/%s.bmp' % (windDirection)
-
-    def windSpeed(self):
-        speed = float(self.weather['wind']['speed']) * 3.6
-
-        return "{0:.1f}".format(speed)
 
     def drawImage(self, image, x = 0, y = 0):
         self.epd.set_frame_memory(image, x, y)
         self.epd.display_frame()
 
-    def clearScreen(self):
-        image = Image.new('1', self.screenDimension(), 255)
-
-        self.drawImage(image)
-
 main = Main()
-main.writeData()
+main.draw()
