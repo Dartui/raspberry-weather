@@ -79,6 +79,8 @@ class Weather:
         return self.__getIconPath('unknown.bmp')
 
     def __temperatureIcon(self, temperature):
+        temperature = float(temperature)
+        
         if (temperature < 0):
             return self.__getIconPath('temperature/cold.bmp')
 
