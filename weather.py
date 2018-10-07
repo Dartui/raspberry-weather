@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as XML
 import requests
+import os
 
 class Weather:
     def __init__(self, lat, lng):
