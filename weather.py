@@ -65,7 +65,7 @@ class Weather:
             'wind': {
                 'icon': self.__windIcon(windDirection.get('name')),
                 'direction': windDirection.get('name'),
-                'speed': self.__windSpedd(windSpeed.get('mps')),
+                'speed': self.__windSpeed(windSpeed.get('mps')),
             },
         }
 
