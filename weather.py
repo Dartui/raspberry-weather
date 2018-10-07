@@ -92,6 +92,6 @@ class Weather:
         return './icons/wind/%s.bmp' % (direction)
 
     def __windSpeed(self, speed):
-        speed *= 3.6
+        speed = float(speed) * 3.6
 
         return "{0:.1f}".format(speed)
