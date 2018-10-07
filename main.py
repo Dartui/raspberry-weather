@@ -60,7 +60,6 @@ class Main:
         image = self.generate()
 
         self.drawImage(image)
-        self.drawImage(image)
 
     def drawImage(self, image, x = 0, y = 0):
         self.epd.set_frame_memory(image, x, y)

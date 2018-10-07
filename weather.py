@@ -71,27 +71,32 @@ class Weather:
 
     def __weatherIcon(self, xml):
         iconId = xml.find('product')[1].find('location/symbol').get('number')
-        path = './icons/weather/%s.bmp' % (iconId)
+        path = self.__getIconPath('weather/%s.bmp' % (iconId))
 
         if (os.path.isfile(path)):
             return path
 
-        return './icons/unknown.bmp'
+        return self.__getIconPath('unknown.bmp')
 
     def __temperatureIcon(self, temperature):
         if (temperature < 0):
-            return './icons/temperature/cold.bmp'
+            return self.__getIconPath('temperature/cold.bmp')
 
         if (temperature > 20):
-            return './icons/temperature/warm.bmp'
+            return self.__getIconPath('temperature/warm.bmp')
 
-        return './icons/temperature/normal.bmp'
+        return self.__getIconPath('temperature/normal.bmp')
 
 
     def __windIcon(self, direction):
-        return './icons/wind/%s.bmp' % (direction)
+        return self.__getIconPath('wind/%s.bmp' % (direction))
 
     def __windSpeed(self, speed):
         speed = float(speed) * 3.6
 
         return "{0:.1f}".format(speed)
+
+    def __getIconPath(self, path):
+        root = os.path.dirname(os.path.realpath(__file__))
+
+        return '%s/icons/%s' % (root, path)
